@@ -1,0 +1,14 @@
+def Get_itens(key):
+    response=urllib.request.urlopen('https://br1.api.riotgames.com/lol/static-data/v3/items?locale=en_US&api_key=' + key)
+#response = urlopen(request)
+    elevations = response.read()
+    data = json.loads(elevations)
+    
+    itens=pd.DataFrame(columns=['id','name'])
+    
+    for item in data['data']:
+        if(item!=str(3632)):
+            id=data['data'][str(item)]['id']
+            name=data['data'][str(item)]['name']
+            vec=pd.Series([id,name],['id','name'])
+            itens=itens.append([vec],ignore_index=True)
