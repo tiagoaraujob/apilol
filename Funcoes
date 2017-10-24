@@ -1,0 +1,18 @@
+def Get_champs(key):
+    response=urllib.request.urlopen('https://br1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&api_key=' + key)
+#response = urlopen(request)
+    elevations = response.read()
+    data = json.loads(elevations)
+
+    champs=pd.DataFrame(columns=['id','chave','name','title'])
+
+
+    for key in data['data']:
+        id=data['data'][str(key)]['id']
+        key=data['data'][key]['key']
+        name=data['data'][key]['name']
+        title=data['data'][key]['title']
+        vec=pd.Series([id,key,name,title],['id','chave','name','title'])
+        champs=champs.append([vec],ignore_index=True)
+    return champs;
+        
